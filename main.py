@@ -67,17 +67,25 @@ def attack(prev_cipher: int, cur_cipher: int):
     adder = 0x01_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00
     for cur_padding_len in range(16, 1, -1):
         tmp = prev_guess
-        for cur_byte in range(0x100):
-            reply = decrypt_server(parse(tmp))
-            if not reply:
-                break
-            tmp += adder
+        tmp += adder
+        reply = decrypt_server(parse(tmp))
         if not reply:
             break
         adder >>= 8
+
+        # DEPRECATED
+        # for cur_byte in range(0x100):
+        #     reply = decrypt_server(parse(tmp))
+        #     if not reply:
+        #         break
+        #     tmp += adder
+        # if not reply:
+        #     break
+        # adder >>= 8
     else:
         cur_padding_len = 1
 
+        
     # 根据 cur_padding_len 求出 mid_state 的后 cur_padding_len 字节
     padding_block = cur_padding_len
     for i in range(cur_padding_len - 1):
@@ -137,3 +145,12 @@ if __name__ == '__main__':
     print()
     print("MSG:")
     print(binascii.a2b_hex(m1 + m2 + m3))
+
+    # 倪晓晗
+    # 202000460071
+    # 马洋
+    # 202000460146
+    # 张施珵
+    # 202000460120
+    # 李卓群
+    # 202000460041
